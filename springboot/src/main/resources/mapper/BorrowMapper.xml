@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.BorrowMapper">
+
+    <select id="selectAll" resultType="com.example.entity.Borrow">
+        select borrow.*, user.name as userName, book.name as bookName from borrow
+        left join user on borrow.user_id = user.id
+        left join book on borrow.book_id = book.id
+        <where>
+            <if test="id != null"> and id = #{id}</if>
+            <if test="userId != null"> and user_id = #{userId}</if>
+            <if test="startTime != null"> and start_time like concat('%', #{startTime}, '%')</if>
+            <if test="endTime != null"> and end_time like concat('%', #{endTime}, '%')</if>
+            <if test="status != null"> and status like concat('%', #{status}, '%')</if>
+            <if test="bookId != null"> and book_id = #{bookId}</if>
+            <if test="name != null"> and borrow.name like concat('%', #{name}, '%')</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Borrow">
+        select * from borrow where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from borrow where  id = #{id}
+    </delete>
+
+</mapper>
